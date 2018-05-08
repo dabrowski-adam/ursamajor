@@ -18,6 +18,11 @@ public class TechnologyGameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.5f, 0.75f, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (Gdx.input.isTouched()) {
+            game.setScreen(game.mainMenuScreen);
+            dispose();
+        }
     }
 
     @Override
