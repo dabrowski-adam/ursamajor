@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class UrsaGame extends Game {
     SpriteBatch spriteBatch;
+    MainMenuScreen mainMenuScreen;
 
     @Override
     public void create() {
         spriteBatch = new SpriteBatch();
-        this.setScreen(new MainMenuScreen(this, spriteBatch));
+        mainMenuScreen = new MainMenuScreen(this);
+        this.setScreen(mainMenuScreen);
     }
 
     @Override

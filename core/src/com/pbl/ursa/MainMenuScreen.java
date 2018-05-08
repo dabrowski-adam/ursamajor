@@ -23,9 +23,9 @@ public class MainMenuScreen implements Screen {
     Skin skin;
     Stage stage;
 
-    public MainMenuScreen(final UrsaGame game, final SpriteBatch spriteBatch) {
+    public MainMenuScreen(final UrsaGame game) {
         this.game = game;
-        this.spriteBatch = spriteBatch;
+        this.spriteBatch = game.spriteBatch;
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -78,7 +78,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 buttonS.setText("Science!");
-                game.setScreen(new ScienceGameScreen(spriteBatch));
+                game.setScreen(new ScienceGameScreen(game));
             }
         });
 
@@ -86,6 +86,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 buttonT.setText("Technology!");
+                game.setScreen(new TechnologyGameScreen(game));
             }
         });
 
@@ -93,6 +94,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 buttonE.setText("Engineering!");
+                game.setScreen(new EngineeringGameScreen(game));
             }
         });
 
@@ -100,6 +102,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 buttonM.setText("Mathematics!");
+                game.setScreen(new MathematicsGameScreen(game));
             }
         });
 

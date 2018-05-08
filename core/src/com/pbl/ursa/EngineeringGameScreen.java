@@ -5,18 +5,18 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class ScienceGameScreen implements Screen {
+public class EngineeringGameScreen implements Screen {
     final UrsaGame game;
     final SpriteBatch spriteBatch;
 
-    public ScienceGameScreen(final UrsaGame game) {
+    public EngineeringGameScreen(final UrsaGame game) {
         this.game = game;
         this.spriteBatch = game.spriteBatch;
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0.5f, 0.75f, 1);
+        Gdx.gl.glClearColor(0.75f, 1, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
