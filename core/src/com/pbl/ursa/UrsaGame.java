@@ -22,5 +22,6 @@ public class UrsaGame extends Game {
     @Override
     public void dispose() {
         spriteBatch.dispose();
+        mainMenuScreen.dispose();
     }
 }
