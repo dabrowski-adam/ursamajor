@@ -18,7 +18,7 @@ public class TechnologyGameScreen implements Screen {
     private OrthographicCamera camera;
     private Map<Tool, Texture> assets;
     private Board board;
-    private Map<Tool, Integer> inventory;
+    private Inventory inventory;
 
     public TechnologyGameScreen(final UrsaGame game) {
         // Dependencies
@@ -47,21 +47,8 @@ public class TechnologyGameScreen implements Screen {
         board.cells[0][4].content = Tool.BeltRightLocked;
         board.cells[3][4].content = Tool.Bin;
 
-        inventory = new HashMap<Tool, Integer>();
-        inventory.put(Tool.BeltRight, 2);
-
-    }
-
-    private void renderInventory(SpriteBatch spriteBatch) {
-        if (spriteBatch == null || !spriteBatch.isDrawing()) { return; }
-
-        spriteBatch.draw(assets.get(Tool.BottomBackground), 0, 320);
-        for (Tool key : inventory.keySet()) {
-            spriteBatch.draw(assets.get(key), 35, 320 + 35, 50, 50);
-            game.font.draw(spriteBatch,
-                    inventory.get(key).toString(),
-                    35 + 40, 320 + 35 + 40);
-        }
+        inventory = new Inventory(0, 320);
+        inventory.tools.put(Tool.BeltRight, 2);
     }
 
     @Override
@@ -73,7 +60,7 @@ public class TechnologyGameScreen implements Screen {
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
         board.render(spriteBatch, assets);
-        renderInventory(spriteBatch);
+        inventory.render(spriteBatch, assets, game.font);
         spriteBatch.end();
 
         if (Gdx.input.isTouched()) {
