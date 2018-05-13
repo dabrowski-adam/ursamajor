@@ -1,0 +1,69 @@
+
+textures.png
+size: 2048,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+badlogic
+  rotate: false
+  xy: 878, 164
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+bear
+  rotate: false
+  xy: 564, 206
+  size: 312, 304
+  orig: 312, 304
+  offset: 0, 0
+  index: -1
+logotype
+  rotate: false
+  xy: 2, 70
+  size: 560, 440
+  orig: 560, 440
+  offset: 0, 0
+  index: -1
+technology/belt
+  rotate: false
+  xy: 564, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+technology/belt_blocked
+  rotate: false
+  xy: 564, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+technology/bin
+  rotate: false
+  xy: 1136, 320
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+technology/bottle
+  rotate: false
+  xy: 1344, 454
+  size: 54, 56
+  orig: 54, 56
+  offset: 0, 0
+  index: -1
+technology/cell
+  rotate: false
+  xy: 666, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+ursamajor
+  rotate: false
+  xy: 878, 422
+  size: 464, 88
+  orig: 464, 88
+  offset: 0, 0
+  index: -1
