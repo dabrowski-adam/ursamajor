@@ -57,6 +57,15 @@ public class TechnologyGameScreen implements Screen {
 
         inventory = new Inventory(0, 320);
         inventory.tools.put(Tool.BeltRight, 2);
+
+        // Input
+        input.bindDown(inventory.bounds, new Callable() {
+            @Override
+            public void call(float x, float y) {
+                game.setScreen(game.mainMenuScreen);
+                dispose();
+            }
+        });
     }
 
     @Override
