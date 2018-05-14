@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pbl.ursa.UrsaGame;
@@ -16,13 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TechnologyGameScreen implements Screen {
-    private final UrsaGame game;
-    private final SpriteBatch spriteBatch;
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private Map<Tool, Texture> assets;
-    private Board board;
-    private Inventory inventory;
+    final UrsaGame game;
+    final SpriteBatch spriteBatch;
+    OrthographicCamera camera;
+    Viewport viewport;
+    Map<Tool, Texture> assets;
+    Board board;
+    Inventory inventory;
+    InputHandler input;
 
     public TechnologyGameScreen(final UrsaGame game) {
         // Dependencies
@@ -33,7 +33,8 @@ public class TechnologyGameScreen implements Screen {
         camera.setToOrtho(true, 320, 480);
         viewport = new FillViewport(320, 480, camera);
 
-        Gdx.input.setInputProcessor(new Input(camera));
+        input = new InputHandler(this);
+        Gdx.input.setInputProcessor(input);
 
         // Assets
         assets = new HashMap<Tool, Texture>();
@@ -68,6 +69,10 @@ public class TechnologyGameScreen implements Screen {
         spriteBatch.begin();
         board.render(spriteBatch, assets);
         inventory.render(spriteBatch, assets, game.font);
+        spriteBatch.draw(assets.get(Tool.Bottle),
+                input.target.x,
+                input.target.y,
+                10, 10);
         spriteBatch.end();
     }
 
