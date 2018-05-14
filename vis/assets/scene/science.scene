@@ -70,6 +70,10 @@
           "@class": "Layer"
         },
         {
+          "groupIds": [],
+          "@class": "VisGroup"
+        },
+        {
           "uuid": "de0bb5fd-0867-4731-8df4-03a3c3fe555d",
           "@class": "VisUUID"
         },
@@ -78,6 +82,7 @@
           "@class": "Renderable"
         },
         {
+          "id": "logo",
           "@class": "VisID"
         }
       ],
@@ -86,8 +91,8 @@
     {
       "components": [
         {
-          "x": -68.40166,
-          "y": 155.05034,
+          "x": -68.4017,
+          "y": 155.0503,
           "scaleX": 0.5,
           "scaleY": 0.5,
           "rotation": 0.0,
@@ -126,6 +131,10 @@
           "@class": "Layer"
         },
         {
+          "groupIds": [],
+          "@class": "VisGroup"
+        },
+        {
           "uuid": "665a9dcd-96b1-4250-af5b-92cc41345dcc",
           "@class": "VisUUID"
         },
@@ -134,6 +143,7 @@
           "@class": "Renderable"
         },
         {
+          "id": "name",
           "@class": "VisID"
         }
       ],

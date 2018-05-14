@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pbl.ursa.UrsaGame;
 
 import java.util.HashMap;
@@ -16,6 +19,7 @@ public class TechnologyGameScreen implements Screen {
     private final UrsaGame game;
     private final SpriteBatch spriteBatch;
     private OrthographicCamera camera;
+    private Viewport viewport;
     private Map<Tool, Texture> assets;
     private Board board;
     private Inventory inventory;
@@ -27,6 +31,9 @@ public class TechnologyGameScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(true, 320, 480);
+        viewport = new FillViewport(320, 480, camera);
+
+        Gdx.input.setInputProcessor(new Input(camera));
 
         // Assets
         assets = new HashMap<Tool, Texture>();
@@ -62,16 +69,11 @@ public class TechnologyGameScreen implements Screen {
         board.render(spriteBatch, assets);
         inventory.render(spriteBatch, assets, game.font);
         spriteBatch.end();
-
-        if (Gdx.input.isTouched()) {
-            game.setScreen(game.mainMenuScreen);
-            dispose();
-        }
     }
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height, true);
     }
 
     @Override
