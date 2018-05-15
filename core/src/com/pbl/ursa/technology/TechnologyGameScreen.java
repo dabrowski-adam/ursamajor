@@ -71,10 +71,14 @@ public class TechnologyGameScreen implements Screen {
         input.bindUp(new Rectangle(0, 0, 320, 480), new Callable() {
             @Override
             public void call(float x, float y) {
-                itemOrigin.insert(draggedItem);
-                draggedItem = null;
+                resetDragged();
             }
         });
+    }
+
+    public void resetDragged() {
+        itemOrigin.insert(draggedItem);
+        draggedItem = null;
     }
 
     @Override

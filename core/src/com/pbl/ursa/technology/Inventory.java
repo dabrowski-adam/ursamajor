@@ -25,6 +25,8 @@ public class Inventory implements ToolHolder {
             public void call(float x, float y) {
                 if (itemOrigin.insert(gameScreen.draggedItem)) {
                     gameScreen.draggedItem = null;
+                } else {
+                    gameScreen.resetDragged();
                 }
             }
         });

@@ -39,6 +39,8 @@ public class Board {
                     public void call(float x, float y) {
                         if (cell.insert(gameScreen.draggedItem)) {
                             gameScreen.draggedItem = null;
+                        } else {
+                            gameScreen.resetDragged();
                         }
                     }
                 });
