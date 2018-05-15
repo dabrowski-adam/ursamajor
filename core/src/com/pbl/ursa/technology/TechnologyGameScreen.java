@@ -63,18 +63,11 @@ public class TechnologyGameScreen implements Screen {
         board.cells[3][4].isDisabled = true;
         board.cells[2][2].content = Tool.BeltRight;
 
-        inventory = new Inventory(0, 320);
-        inventory.tools.put(Tool.BeltRight, 2);
+        inventory = new Inventory(0, 320, this);
+        inventory.insert(Tool.BeltRight);
+        inventory.insert(Tool.BeltRight);
 
-        // Input
-        input.bindDown(inventory.bounds, new Callable() {
-            @Override
-            public void call(float x, float y) {
-                game.setScreen(game.mainMenuScreen);
-                dispose();
-            }
-        });
-        // Has to be last
+        // Has to be the last input event
         input.bindUp(new Rectangle(0, 0, 320, 480), new Callable() {
             @Override
             public void call(float x, float y) {

@@ -43,6 +43,12 @@ public class InputHandler extends InputAdapter {
         touchUpBinder.put(bounds, function);
     }
 
+    public void unbind(Rectangle bounds) {
+        touchDownBinder.remove(bounds);
+        touchUpBinder.remove(bounds);
+        touchUpBinder.remove(bounds);
+    }
+
     private void handleBinder(Map<Rectangle, Callable> binder, Vector3 coords) {
         for (Rectangle bounds : binder.keySet()) {
             if (bounds.contains(coords.x, coords.y)) {
