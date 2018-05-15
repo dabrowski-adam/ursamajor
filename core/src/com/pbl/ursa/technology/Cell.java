@@ -6,13 +6,15 @@ import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Map;
 
-public class Cell {
+public class Cell implements ToolHolder {
     Rectangle bounds;
     Tool content;
+    boolean isDisabled;
 
     public Cell(float x, float y, float width, float height) {
         bounds = new Rectangle(x, y, width, height);
         content = Tool.Empty;
+        isDisabled = false;
     }
 
     public void render(SpriteBatch spriteBatch, Map<Tool, Texture> resources) {
@@ -25,6 +27,22 @@ public class Cell {
                 bounds.y,
                 bounds.width,
                 bounds.height);
+    }
+
+    public Tool remove() {
+        if (isDisabled || content == Tool.Empty) { return null; }
+
+        Tool removed = content;
+        content = Tool.Empty;
+        return removed;
+    }
+
+    @Override
+    public boolean insert(Tool tool) {
+        if (tool == null || content != Tool.Empty) { return false; }
+
+        content = tool;
+        return true;
     }
 
 }

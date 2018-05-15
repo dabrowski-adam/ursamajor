@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Inventory {
+public class Inventory implements ToolHolder {
     Rectangle bounds;
     Map<Tool, Integer> tools;
 
@@ -42,5 +42,12 @@ public class Inventory {
                     bounds.y + 35 + 40);
             i++;
         }
+    }
+
+    @Override
+    public boolean insert(Tool tool) {
+        tools.put(tool, tools.get(tool) + 1);
+
+        return true;
     }
 }
