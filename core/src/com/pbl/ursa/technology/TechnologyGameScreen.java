@@ -89,8 +89,8 @@ public class TechnologyGameScreen implements Screen {
         inventory.render(spriteBatch, assets, game.font);
         if (draggedItem != null) {
             spriteBatch.draw(assets.get(draggedItem),
-                    input.target.x,
-                    input.target.y,
+                    input.target.x - 25,
+                    input.target.y - 25,
                     50, 50);
         }
         spriteBatch.end();
