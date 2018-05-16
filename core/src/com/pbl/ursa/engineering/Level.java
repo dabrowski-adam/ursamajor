@@ -118,6 +118,7 @@ public class Level {
             throwParts();
         }
         spriteBatch.draw(mystery,shape_x,shape_y);
+
         for(Part each: parts){
             each.render(spriteBatch);
         }
