@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pbl.ursa.UrsaGame;
@@ -20,9 +21,13 @@ public class TechnologyGameScreen implements Screen {
     OrthographicCamera camera;
     Viewport viewport;
     Map<Tool, Texture> assets;
+    InputHandler input;
+
     Board board;
     Inventory inventory;
-    InputHandler input;
+
+    Tool draggedItem;
+    ToolHolder itemOrigin;
 
     public TechnologyGameScreen(final UrsaGame game) {
         // Dependencies
@@ -51,21 +56,29 @@ public class TechnologyGameScreen implements Screen {
         pixmap.dispose();
 
         // State
-        board = new Board(35, 35);
+        board = new Board(35, 35, this);
         board.cells[0][4].content = Tool.BeltRightLocked;
+        board.cells[0][4].isDisabled = true;
         board.cells[3][4].content = Tool.Bin;
+        board.cells[3][4].isDisabled = true;
+        board.cells[2][2].content = Tool.BeltRight;
 
-        inventory = new Inventory(0, 320);
-        inventory.tools.put(Tool.BeltRight, 2);
+        inventory = new Inventory(0, 320, this);
+        inventory.insert(Tool.BeltRight);
+        inventory.insert(Tool.BeltRight);
 
-        // Input
-        input.bindDown(inventory.bounds, new Callable() {
+        // Has to be the last input event
+        input.bindUp(new Rectangle(0, 0, 320, 480), new Callable() {
             @Override
             public void call(float x, float y) {
-                game.setScreen(game.mainMenuScreen);
-                dispose();
+                resetDragged();
             }
         });
+    }
+
+    public void resetDragged() {
+        itemOrigin.insert(draggedItem);
+        draggedItem = null;
     }
 
     @Override
@@ -78,10 +91,12 @@ public class TechnologyGameScreen implements Screen {
         spriteBatch.begin();
         board.render(spriteBatch, assets);
         inventory.render(spriteBatch, assets, game.font);
-        spriteBatch.draw(assets.get(Tool.Bottle),
-                input.target.x,
-                input.target.y,
-                10, 10);
+        if (draggedItem != null) {
+            spriteBatch.draw(assets.get(draggedItem),
+                    input.target.x - 25,
+                    input.target.y - 25,
+                    50, 50);
+        }
         spriteBatch.end();
     }
 

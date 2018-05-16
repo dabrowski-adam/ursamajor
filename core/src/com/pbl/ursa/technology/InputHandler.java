@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class InputHandler extends InputAdapter {
@@ -26,9 +26,9 @@ public class InputHandler extends InputAdapter {
 
         target = new Vector3();
         isDragging = false;
-        touchDownBinder = new HashMap<Rectangle, Callable>();
-        touchDraggedBinder = new HashMap<Rectangle, Callable>();
-        touchUpBinder = new HashMap<Rectangle, Callable>();
+        touchDownBinder = new LinkedHashMap<Rectangle, Callable>();
+        touchDraggedBinder = new LinkedHashMap<Rectangle, Callable>();
+        touchUpBinder = new LinkedHashMap<Rectangle, Callable>();
     }
 
     public void bindDown(Rectangle bounds, Callable function) {
@@ -43,10 +43,17 @@ public class InputHandler extends InputAdapter {
         touchUpBinder.put(bounds, function);
     }
 
+    public void unbind(Rectangle bounds) {
+        touchDownBinder.remove(bounds);
+        touchUpBinder.remove(bounds);
+        touchUpBinder.remove(bounds);
+    }
+
     private void handleBinder(Map<Rectangle, Callable> binder, Vector3 coords) {
         for (Rectangle bounds : binder.keySet()) {
             if (bounds.contains(coords.x, coords.y)) {
                 binder.get(bounds).call(coords.x, coords.y);
+                return;
             }
         }
     }
