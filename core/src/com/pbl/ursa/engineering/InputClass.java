@@ -16,7 +16,11 @@ public class InputClass implements InputProcessor {
 
     InputClass (EngineeringGameScreen screen){
         camera = screen.camera;
-        current_level = screen.level_1;
+        current_level = screen.levels.get(screen.current_level);
+    }
+
+    void updateLevel(EngineeringGameScreen screen){
+        current_level = screen.levels.get(screen.current_level);
     }
 
     /// REMMEMBER ABOUT CAMERA UNPROJECT FROM
@@ -37,6 +41,7 @@ public class InputClass implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        current_level.endLevel();
         Vector3  position = camera.unproject(new Vector3(screenX,screenY,0));
         previous_x = position.x;
         previous_y = position.y;

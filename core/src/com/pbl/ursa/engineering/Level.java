@@ -1,7 +1,11 @@
 package com.pbl.ursa.engineering;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -15,18 +19,37 @@ import sun.rmi.runtime.Log;
 
 public class Level {
     ArrayList<Part> parts;
-    private final Texture done;
+    private final Sprite done;
     private final Texture mystery;
     private float shape_x;
     private float shape_y;
     private boolean firstTime=true;
+    private float alpha=0.0f;
+    private float deltaTime;
+    private BitmapFont text;
+    private boolean endGame=false;
+    private final String name;
+    private Sound done_sound;
+    private boolean finish;
 
-    public Level(String done, String mystery) {
-        this.done = new Texture(Gdx.files.internal("engineering/"+done));
+    public Level(String done, String mystery, String name) {
+        Texture done_texture = new Texture(Gdx.files.internal("engineering/"+done));
+        done_texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        this.done = new Sprite(done_texture);
+        this.done.setAlpha(alpha);
         this.mystery = new Texture(Gdx.files.internal("engineering/"+mystery));
+        this.mystery.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         shape_x = 160-this.done.getWidth()/2;
         shape_y = 240;
+        this.done.setPosition(shape_x,shape_y);
         parts = new ArrayList<Part>();
+        text = new BitmapFont();
+        text.getData().setScale(3);
+        text.setColor(Color.BLACK);
+        text.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        this.name=name;
+
+        done_sound = Gdx.audio.newSound(Gdx.files.internal("engineering/tada.mp3"));
     }
 
     private void throwParts(){
@@ -62,20 +85,48 @@ public class Level {
         }
     }
 
-    void render(SpriteBatch spriteBatch){
-        if (spriteBatch == null || !spriteBatch.isDrawing()) { return; }
+    void endLevel(){
+        if(endGame){
+            finish=true;
+        }
+    }
+
+    boolean fadeIn(Sprite sprite){
+        if(alpha>=1){
+            sprite.setAlpha(1);
+            return true;
+        }
+        else {
+            if(alpha==0) done_sound.play();
+            deltaTime = Gdx.graphics.getDeltaTime();
+            alpha = alpha + deltaTime;
+            sprite.setAlpha(alpha);
+            return false;
+        }
+    }
+
+    boolean render(SpriteBatch spriteBatch){
+        if (spriteBatch == null || !spriteBatch.isDrawing()) { return false; }
+        if(endGame){
+            done.draw(spriteBatch);
+            text.draw(spriteBatch,name,50,100);
+            if(finish) return true;
+            return false;
+        }
         if(firstTime){
             firstTime=false;
             throwParts();
         }
+        spriteBatch.draw(mystery,shape_x,shape_y);
+        for(Part each: parts){
+            each.render(spriteBatch);
+        }
         if(isFinished()){
-            spriteBatch.draw(done,shape_x,shape_y);
-        }
-        else {
-            spriteBatch.draw(mystery,shape_x,shape_y);
-            for(Part each: parts){
-                each.render(spriteBatch);
+            if(fadeIn(done)) {
+                endGame = true;
             }
+            done.draw(spriteBatch);
         }
+        return false;
     }
 }

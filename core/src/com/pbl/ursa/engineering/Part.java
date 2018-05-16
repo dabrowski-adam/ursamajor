@@ -1,6 +1,7 @@
 package com.pbl.ursa.engineering;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -20,15 +21,18 @@ public class Part {
     private boolean isPlaced=false;
     private float desired_x; // JAK NA RAZIE - DO USTAWIENIA
     private float desired_y;
+    private final Sound attatched_sound;
 
     private final Texture myTexture;
 
     public Part(String textureName, float x, float y) {
         myTexture = new Texture(Gdx.files.internal("engineering/"+textureName));
+        myTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         width = myTexture.getWidth();
         height = myTexture.getHeight();
         desired_y = y;
         desired_x = x;
+        attatched_sound = Gdx.audio.newSound(Gdx.files.internal("engineering/bad.mp3"));
     }
 
 
@@ -41,7 +45,8 @@ public class Part {
             isPlaced=true;
             coor_x=desired_x;
             coor_y=desired_y;
-            Gdx.app.log("ten ","jest");
+            attatched_sound.play();
+
             return true;
         }
         return false;
