@@ -13,6 +13,8 @@ public class InputClass implements InputProcessor {
     private Level current_level;
     private float previous_x;
     private float previous_y;
+    private Part current_shape;
+
 
     InputClass (EngineeringGameScreen screen){
         camera = screen.camera;
@@ -20,6 +22,7 @@ public class InputClass implements InputProcessor {
     }
 
     void updateLevel(EngineeringGameScreen screen){
+        if(current_level==null) return;
         current_level = screen.levels.get(screen.current_level);
     }
 
@@ -45,24 +48,26 @@ public class InputClass implements InputProcessor {
         Vector3  position = camera.unproject(new Vector3(screenX,screenY,0));
         previous_x = position.x;
         previous_y = position.y;
+        current_shape = current_level.detectPart(position.x,position.y);
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        current_shape=null;
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Vector3  position = camera.unproject(new Vector3(screenX,screenY,0));
-        float difference_x;
-        float difference_y;
-        difference_x = position.x - previous_x;
-        difference_y = position.y - previous_y;
-        previous_x = position.x;
-        previous_y = position.y;
-        current_level.move(position.x,position.y,difference_x,difference_y);
+        if(current_shape!=null && !current_shape.isPlaced()) {
+            Vector3 position = camera.unproject(new Vector3(screenX, screenY, 0));
+            float difference_x = position.x - previous_x;
+            float difference_y = position.y - previous_y;
+            previous_x = position.x;
+            previous_y = position.y;
+            current_level.move(difference_x, difference_y, current_shape);
+        }
         return false;
     }
 

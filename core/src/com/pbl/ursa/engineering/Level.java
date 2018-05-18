@@ -54,10 +54,10 @@ public class Level {
 
     private void throwParts(){
         int amount = parts.size();
-        float distance = 270/amount;
+        float distance = 320/amount;
         for(int i=0;i<amount;i++){
-            parts.get(i).coor_y=10;
-            parts.get(i).coor_x=50+i*distance;
+            parts.get(i).coor_y=100;
+            parts.get(i).coor_x=i*distance;
         }
     }
 
@@ -68,21 +68,24 @@ public class Level {
         return true;
     }
 
-    void move(float x, float y, float difference_x, float difference_y){
+    Part detectPart(float x, float y){
         for(Part each: parts){
             if(each.isPlaced()) continue;
             if(     x > each.coor_x &&
                     x < each.coor_x + each.width &&
                     y > each.coor_y &&
                     y < each.coor_y + each.height){
-
-                each.coor_y += difference_y;
-                each.coor_x += difference_x;
-                Gdx.app.log("position x",Float.toString(each.coor_x));
-                Gdx.app.log("position y",Float.toString(each.coor_y));
-                break;
+                return each;
             }
         }
+        return null;
+    }
+
+    void move(float difference_x, float difference_y, Part current_shape){
+        current_shape.coor_y += difference_y;
+        current_shape.coor_x += difference_x;
+        Gdx.app.log("position x",Float.toString(current_shape.coor_x));
+        Gdx.app.log("position y",Float.toString(current_shape.coor_y));
     }
 
     void endLevel(){

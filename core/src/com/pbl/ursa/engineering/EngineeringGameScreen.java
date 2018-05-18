@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pbl.ursa.UrsaGame;
 import com.pbl.ursa.technology.Tool;
@@ -34,7 +35,7 @@ public class EngineeringGameScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 480);
-        viewport = new FillViewport(320, 480, camera);
+        viewport = new StretchViewport(320, 480, camera);
 
 
 
@@ -50,11 +51,11 @@ public class EngineeringGameScreen implements Screen {
         level_1.parts.add(new Part("engine_part3.png",127,239));
 
         Level level_2 = new Level("wing_done.png","wing_mystery.png","wing");
-        level_2.parts.add(new Part("wing_part1.png",-100,-100));
-        level_2.parts.add(new Part("wing_part2.png",-100,-100));
-        level_2.parts.add(new Part("wing_part3.png",-100,-100));
-        level_2.parts.add(new Part("wing_part4.png",-100,-100));
-        level_2.parts.add(new Part("wing_part5.png",-100,-100));
+        level_2.parts.add(new Part("wing_part1.png",256,324));
+        level_2.parts.add(new Part("wing_part2.png",148,293));
+        level_2.parts.add(new Part("wing_part3.png",54,271));
+        level_2.parts.add(new Part("wing_part4.png",12,240));
+        level_2.parts.add(new Part("wing_part5.png",10,254));
 
 
 
@@ -82,7 +83,7 @@ public class EngineeringGameScreen implements Screen {
             }
         else if(levels.get(current_level).render(spriteBatch)) {
             current_level++;
-            input.updateLevel(this);
+            if(levels.size()!=current_level)input.updateLevel(this);
         }
         spriteBatch.end();
     }
