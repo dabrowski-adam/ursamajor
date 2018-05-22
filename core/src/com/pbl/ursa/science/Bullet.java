@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Circle;
 
 import java.util.Map;
 
+import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.pow;
 import static java.lang.Math.sin;
@@ -14,10 +15,14 @@ import static java.lang.Math.sin;
 class Bullet {
     Circle body;
     SGAssets asset;
+    private static final int MINALLOWEDX = 35;
+    private static final int MAXALLOWEDX = 125;
+    private static final int MINALLOWEDY = 34;
+    private static final int MAXALLOWEDY = 70;
     private float timeInAir;
     private float initialVelocity;
     private double angle;
-    private static float GRAVITYACCELERATION = 9.81f;
+    private static float GRAVITYACCELERATION = 12.5f;
     private float initialX;
     private float initialY;
 
@@ -27,7 +32,7 @@ class Bullet {
         body = new Circle (x, y, radius);
         initialX = x;
         initialY = y;
-        this.angle = angle;
+        this.angle = angle*PI/180;
         this.initialVelocity = velocity;
         asset = SGAssets.Bullet;
         timeInAir = 0;
@@ -47,10 +52,10 @@ class Bullet {
     void resetTIA() {timeInAir = 0; }
 
     boolean isWithinBoundaries() {
-        if (body.x < ScienceGame.WORLDLEFTBOUNDARY ||
-                body.x > ScienceGame.WORLDRIGHTBOUNDARY ||
-                body.y < ScienceGame.WORLDDOWNBOUNDARY ||
-                body.y > ScienceGame.WORLDUPBOUNDARY) return false;
+        if (body.x < MINALLOWEDX ||
+                body.x > MAXALLOWEDX ||
+                body.y < MINALLOWEDY ||
+                body.y > MAXALLOWEDY) return false;
         return true;
     }
 

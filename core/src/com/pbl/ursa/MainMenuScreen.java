@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pbl.ursa.engineering.EngineeringGameScreen;
+import com.pbl.ursa.science.ScienceGameScreen;
 import com.pbl.ursa.technology.TechnologyGameScreen;
 
 public class MainMenuScreen implements Screen {

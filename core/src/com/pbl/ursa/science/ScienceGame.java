@@ -21,13 +21,17 @@ class ScienceGame {
     public static final float WORLDRIGHTBOUNDARY = 160f;
     public static final float WORLDUPBOUNDARY = 90f;
     public static final float DEFAULTANGLE = 45f;
-    public static final float DEFAULTVELOCITY = 0f;
-    public static final float DEFAULTBULLETSOURCEX = 1f;
-    public static final float DEFAULTBULLETSOURCEY = 45f;
+    public static final float DEFAULTVELOCITY = 25f;
+    public static final float DEFAULTBULLETSOURCEX = 40f;
+    public static final float DEFAULTBULLETSOURCEY = 40f;
+    public static final float MINALLOWEDX = 40f;
+    public static final float MAXALLOWEDX = 120f;
+    public static final float MINALLOWEDY = 40f;
+    public static final float MAXALLOWEDY = 65f;
 
     ScienceGame() {
         score = new Score();
-        timer = 5f;
+        timer = 60f;
         selectedAngle = DEFAULTANGLE;
         selectedVelocity = DEFAULTVELOCITY;
         bulletSource = new BulletSource(DEFAULTBULLETSOURCEX, DEFAULTBULLETSOURCEY);
@@ -38,13 +42,17 @@ class ScienceGame {
         selectedAngle += angle;
     }
 
+    int getAngle() { return (int)selectedAngle; }
+
     void changeVelocity(float velocity) {
-        if (selectedVelocity + velocity < 0 /* || selectedVelocity + velocity > iluś tam*/) return;
+        if (selectedVelocity + velocity < 0  || selectedVelocity + velocity > 50) return;
         selectedVelocity += velocity;
     }
 
+    int getVelocity() { return (int)selectedVelocity; }
+
     void deployBullet() {
-        if (bullet == null) bullet = new Bullet(bulletSource.body.x, bulletSource.body.y, Bullet.DEFAULTBULLETRADIUS, selectedAngle, selectedVelocity);
+        if (bullet == null) bullet = new Bullet(DEFAULTBULLETSOURCEX, DEFAULTBULLETSOURCEY, Bullet.DEFAULTBULLETRADIUS, (double)selectedAngle, selectedVelocity);
     }
 
     boolean bulletExists() {
@@ -57,10 +65,10 @@ class ScienceGame {
 
     void deployTarget() {
         if (target == null) target = new Target(
-                MathUtils.random(WORLDLEFTBOUNDARY + Target.TARGETDEFAULTRADIUS,
-                                WORLDRIGHTBOUNDARY - Target.TARGETDEFAULTRADIUS),
-                MathUtils.random(WORLDDOWNBOUNDARY + Target.TARGETDEFAULTRADIUS,
-                                WORLDUPBOUNDARY - Target.TARGETDEFAULTRADIUS),
+                MathUtils.random(MINALLOWEDX + Target.TARGETDEFAULTRADIUS,
+                                MAXALLOWEDX - Target.TARGETDEFAULTRADIUS),
+                MathUtils.random(MINALLOWEDY + Target.TARGETDEFAULTRADIUS,
+                                MAXALLOWEDY - Target.TARGETDEFAULTRADIUS),
                 Target.TARGETDEFAULTRADIUS);
     }
 
@@ -80,6 +88,8 @@ class ScienceGame {
         timer -= byValue;
     }
 
+    int getScore() { return score.getScore(); }
+
     void render(SpriteBatch spriteBatch, Map<SGAssets, Texture> resources) {
         if (spriteBatch == null || !spriteBatch.isDrawing()) { return; }
         if (target != null) target.render(spriteBatch, resources);
@@ -92,7 +102,6 @@ class ScienceGame {
         if (bulletExists()) {
             if (target.isHit(bullet.getBody())) {
                 destroyBullet();
-                bullet.resetTIA();
                 destroyTarget();
                 score.IncreaseValue(1);
             }

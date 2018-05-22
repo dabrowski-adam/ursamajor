@@ -7,6 +7,8 @@ class Score { // ADD CONVERSION TO CURRENCY
         value = 0;
     }
 
+    int getScore(){ return value; }
+
     void IncreaseValue(int byNumber) {
         value += byNumber;
     }

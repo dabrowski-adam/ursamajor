@@ -10,9 +10,9 @@ class Target {
     Circle body;
     SGAssets asset;
 
-    public static final float TARGETDEFAULTX = 80f;
-    public static final float TARGETDEFAULTY = 45f;
-    public static final float TARGETDEFAULTRADIUS = 5f;
+    public static final float TARGETDEFAULTX = ScienceGame.MAXALLOWEDX - ScienceGame.MINALLOWEDX;
+    public static final float TARGETDEFAULTY = ScienceGame.MAXALLOWEDY - ScienceGame.MINALLOWEDY;
+    public static final float TARGETDEFAULTRADIUS = 2f;
 
     Target() {
         body = new Circle(TARGETDEFAULTX, TARGETDEFAULTY, TARGETDEFAULTRADIUS);
@@ -20,14 +20,14 @@ class Target {
     }
 
     Target(float x, float y, float radius) {
-        if(x-radius > ScienceGame.WORLDLEFTBOUNDARY
-                && x+radius < ScienceGame.WORLDRIGHTBOUNDARY
-                && y-radius > ScienceGame.WORLDDOWNBOUNDARY
-                && y+radius < ScienceGame.WORLDUPBOUNDARY) {
+        if(x-radius > ScienceGame.MINALLOWEDX
+                && x+radius < ScienceGame.MAXALLOWEDX
+                && y-radius > ScienceGame.MINALLOWEDY
+                && y+radius < ScienceGame.MAXALLOWEDY) {
             body = new Circle(x, y, radius);
+            asset = SGAssets.Target;
         }
         else body = new Circle();
-        asset = SGAssets.Target;
     }
 
     boolean isHit(Circle missile) {
