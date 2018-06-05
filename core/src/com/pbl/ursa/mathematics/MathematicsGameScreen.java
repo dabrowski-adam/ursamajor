@@ -22,8 +22,8 @@ import com.pbl.ursa.UrsaGame;
 public class MathematicsGameScreen implements Screen {
     final UrsaGame game;
     final SpriteBatch spriteBatch;
-    OrthographicCamera camera;
-    Viewport viewport;
+    //OrthographicCamera camera;
+    //Viewport viewport;
     Digit testDigit;
     Number testNumber;
     public Level currentLevel;
@@ -34,11 +34,13 @@ public class MathematicsGameScreen implements Screen {
         this.game = game;
         this.spriteBatch = game.spriteBatch;
         currentLevel = new Level();
-        currentLevel.addNumberAt(100,200,345);
+        currentLevel.addNumberAt(100,0,234);
+        currentLevel.addNumberAt(80,100,45);
+        currentLevel.addNumberAt(120,200,955);
+        currentLevel.addNumberAt(180,500,1);
+        currentLevel.addNumberAt(180,400,9999);
+        //currentLevel.addNumberAt(150,700,567);
         
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 320, 480);
-        viewport = new StretchViewport(320, 480, camera);
         
         input = new InputManager(this);
         Gdx.input.setInputProcessor(input);
@@ -51,14 +53,9 @@ public class MathematicsGameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         currentLevel.update(delta);
         
-        spriteBatch.setProjectionMatrix(camera.combined);
-        spriteBatch.begin();
-        currentLevel.render(spriteBatch);
-        /*if (Gdx.input.isTouched()) {
-            game.setScreen(game.mainMenuScreen);
-            dispose();
-        }*/
-        spriteBatch.end();
+        spriteBatch.setProjectionMatrix(currentLevel.getCamera().combined);
+        currentLevel.render(spriteBatch); //!! batch is begun and ends in Level object
+        
     }
 
     @Override

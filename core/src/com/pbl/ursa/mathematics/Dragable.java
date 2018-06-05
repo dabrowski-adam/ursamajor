@@ -5,6 +5,8 @@
  */
 package com.pbl.ursa.mathematics;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  *
  * @author marcin7Cd
@@ -12,6 +14,6 @@ package com.pbl.ursa.mathematics;
 public interface Dragable {
     
     void drop();
-    boolean grab();
-    void dragBy(float dx,float dy);
+    boolean grab(Vector2 position);
+    void dragTo(Vector2 position);
 }

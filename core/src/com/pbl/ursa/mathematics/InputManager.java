@@ -24,7 +24,7 @@ public class InputManager implements InputProcessor {
     private Number currentNumber;
 
     InputManager(MathematicsGameScreen screen) {
-        camera = screen.camera;
+        camera = screen.currentLevel.camera;
         currentLevel = screen.currentLevel;
         previousPosition = new Vector2();
     }
@@ -56,9 +56,9 @@ public class InputManager implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 position = camera.unproject(new Vector3(screenX, screenY, 0));
         currentNumber = currentLevel.selectNumberAt(position.x, position.y);
-        previousPosition.x = position.x;
-        previousPosition.y = position.y;
-        if (currentNumber != null && !currentNumber.grab()) {
+        //previousPosition.x = position.x;
+        //previousPosition.y = position.y;
+        if (currentNumber != null && !currentNumber.grab(new Vector2(position.x,position.y))) {
             currentNumber = null;
         }
          
@@ -81,15 +81,13 @@ public class InputManager implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
         Vector3 position = camera.unproject(new Vector3(screenX, screenY, 0));
-        float differenceX = position.x - previousPosition.x;
-        float differenceY = position.y - previousPosition.y;
-        previousPosition.x = position.x;
-        previousPosition.y = position.y;
+        //Vector2 pos = new Vector2(position.x,position.y);
         if (currentNumber != null) {
-            currentNumber.dragBy(differenceX, differenceY);
-            Gdx.app.log("position y", Float.toString(differenceY));
-            Gdx.app.log("position x", Float.toString(differenceX));
-
+            currentNumber.dragTo(new Vector2(position.x, position.y));
+            //currentNumber.realBody.applyForceToCenter(pos.sub(currentNumber.realBody.getWorldCenter()).scl(2.0f), true);
+            //Gdx.app.log("xxx",Float.toString(pos.sub(currentNumber.realBody.getWorldCenter()).scl(2.0f).x));
+            //Gdx.app.log("yyy",Float.toString(pos.sub(currentNumber.realBody.getWorldCenter()).scl(2.0f).y));
+            
         }
         return false;
     }
