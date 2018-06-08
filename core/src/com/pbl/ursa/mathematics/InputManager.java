@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  *
@@ -20,13 +21,13 @@ public class InputManager implements InputProcessor {
 
     Camera camera;
     private Level currentLevel;
-    private Vector2 previousPosition;
-    private Number currentNumber;
+    private Stage overlayStage;
+    private Dragable currentDragable;
 
     InputManager(MathematicsGameScreen screen) {
         camera = screen.currentLevel.camera;
         currentLevel = screen.currentLevel;
-        previousPosition = new Vector2();
+        overlayStage = screen.menu.stage;
     }
 
     void updateLevel(MathematicsGameScreen screen) {
@@ -54,40 +55,48 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 position = camera.unproject(new Vector3(screenX, screenY, 0));
-        currentNumber = currentLevel.selectNumberAt(position.x, position.y);
-        //previousPosition.x = position.x;
-        //previousPosition.y = position.y;
-        if (currentNumber != null && !currentNumber.grab(new Vector2(position.x,position.y))) {
-            currentNumber = null;
-        }
-         
-        if (currentNumber != null) {
-         
+        if (!overlayStage.touchDown(screenX, screenY, pointer, button)) {
+            Vector3 position = camera.unproject(new Vector3(screenX, screenY, 0));
+            currentDragable = currentLevel.selectNumberAt(position.x, position.y);
+            if (currentDragable == null) {
+                currentDragable = currentLevel.camDrag;
+            }
+            if (currentDragable.doesWantScreenCoordinates()) {
+                if (currentDragable != null && !currentDragable.grab(new Vector2(position.x, position.y))) {
+                    currentDragable = null;
+                }
+            } else {
+                if (currentDragable != null && !currentDragable.grab(new Vector2(screenX, screenY))) {
+                    currentDragable = null;
+                }
+            }
         }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (currentNumber != null) {
-            currentNumber.drop();
-            currentNumber = null;
+        overlayStage.touchUp(screenX, screenY, pointer, button);
+        if (screenY > MenuOverlay.Width) {
+            if (currentDragable != null) {
+                currentDragable.drop();
+                currentDragable = null;
+            }
         }
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-        Vector3 position = camera.unproject(new Vector3(screenX, screenY, 0));
-        //Vector2 pos = new Vector2(position.x,position.y);
-        if (currentNumber != null) {
-            currentNumber.dragTo(new Vector2(position.x, position.y));
-            //currentNumber.realBody.applyForceToCenter(pos.sub(currentNumber.realBody.getWorldCenter()).scl(2.0f), true);
-            //Gdx.app.log("xxx",Float.toString(pos.sub(currentNumber.realBody.getWorldCenter()).scl(2.0f).x));
-            //Gdx.app.log("yyy",Float.toString(pos.sub(currentNumber.realBody.getWorldCenter()).scl(2.0f).y));
-            
+        if (screenY > MenuOverlay.Width) {
+            if (currentDragable != null) {
+                if (currentDragable.doesWantScreenCoordinates()) {
+                    Vector3 position = camera.unproject(new Vector3(screenX, screenY, 0));
+                    currentDragable.dragTo(new Vector2(position.x, position.y));
+                } else {
+                    currentDragable.dragTo(new Vector2(screenX, screenY));
+                }
+            }
         }
         return false;
     }

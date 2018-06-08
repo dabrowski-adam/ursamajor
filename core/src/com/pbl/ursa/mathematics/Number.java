@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -22,7 +23,7 @@ import sun.rmi.runtime.Log;
  *
  * @author marcin7Cd
  */
-public class Number implements Dragable {
+public class Number implements Dragable  {
 
     List<Digit> digits;
     Vector2 destination; //used to follow cursor
@@ -39,8 +40,11 @@ public class Number implements Dragable {
 
     Body realBody;
     int value;
+    int collisionCategory;
 
-    Number(float PositionX, float PositionY, int value, World world) {
+    Number(float PositionX, float PositionY, int value,int collisionCategory, World world) {
+        this.collisionCategory = collisionCategory;
+        
         Vector2 relativePosition = new Vector2(0.0f, 0.0f);
         dimension = new Vector2(0.0f, 0.0f);
         destination = new Vector2();
@@ -67,7 +71,7 @@ public class Number implements Dragable {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set((PositionX + relativePosition.x + dimension.x / 2) / Level.PPM, (PositionY + relativePosition.y + dimension.y / 2) / Level.PPM);
-
+        bodyDef.fixedRotation = true;
         // add it to the world
         realBody = world.createBody(bodyDef);
 
@@ -79,10 +83,12 @@ public class Number implements Dragable {
         // set the properties of the object ( shape, weight, restitution(bouncyness)
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
-
+        fixtureDef.density = 1.0f;
+        fixtureDef.filter.categoryBits = (short) (0x0001 << collisionCategory);
+        fixtureDef.filter.maskBits = (short)(-1);
+        
         // create the physical object in our body)
-        realBody.createFixture(shape, 0.0f);
+        realBody.createFixture(fixtureDef);
         shape.dispose();
         realBody.setUserData(this);
     }
@@ -120,10 +126,10 @@ public class Number implements Dragable {
         }
     }
 
-    void remove() {
+    void dispose() {
         realBody.getWorld().destroyBody(realBody);
         for (Digit currentDigit : digits) {
-            currentDigit.remove();
+            currentDigit.dispose();
         }
     }
 
@@ -156,6 +162,11 @@ public class Number implements Dragable {
         isGrabbed = false;
     }
 
+    @Override
+    public boolean doesWantScreenCoordinates() {
+        return true;
+    }    
+    
     void attachToOperation() {
         isOperatedOn = true;
     }
@@ -164,4 +175,6 @@ public class Number implements Dragable {
         isOperatedOn = false;
     }
 
+
 }
+

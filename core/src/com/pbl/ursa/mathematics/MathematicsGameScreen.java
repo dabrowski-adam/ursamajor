@@ -9,17 +9,21 @@ package com.pbl.ursa.mathematics;
  *
  * @author marcin7Cd
  */
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pbl.ursa.UrsaGame;
+import com.pbl.ursa.mathematics.levels.Level1;
+import com.pbl.ursa.mathematics.levels.LevelLoader;
+import com.pbl.ursa.mathematics.levels.LevelSetter;
 
 public class MathematicsGameScreen implements Screen {
+
     final UrsaGame game;
     final SpriteBatch spriteBatch;
     //OrthographicCamera camera;
@@ -28,34 +32,46 @@ public class MathematicsGameScreen implements Screen {
     Number testNumber;
     public Level currentLevel;
     InputManager input;
+    float time;
+    int epoch;
+    LevelLoader levelLoader;
+    MenuOverlay menu;
     
     
     public MathematicsGameScreen(final UrsaGame game) {
         this.game = game;
         this.spriteBatch = game.spriteBatch;
         currentLevel = new Level();
-        currentLevel.addNumberAt(100,0,234);
-        currentLevel.addNumberAt(80,100,45);
-        currentLevel.addNumberAt(120,200,955);
-        currentLevel.addNumberAt(180,500,1);
-        currentLevel.addNumberAt(180,400,9999);
-        //currentLevel.addNumberAt(150,700,567);
+        time = 0;
+        epoch = 0;
+        levelLoader = LevelLoader.getInstance();
+        menu = new MenuOverlay(currentLevel,levelLoader);
         
         
+        levelLoader.loadLevel(0,currentLevel);
+        
+
         input = new InputManager(this);
         Gdx.input.setInputProcessor(input);
-        
+
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0.5f, 1.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        time += delta;
         currentLevel.update(delta);
-        
+
         spriteBatch.setProjectionMatrix(currentLevel.getCamera().combined);
-        currentLevel.render(spriteBatch); //!! batch is begun and ends in Level object
+        spriteBatch.begin();
         
+        currentLevel.render(spriteBatch); 
+        menu.render(spriteBatch);
+        spriteBatch.end();
+        
+        currentLevel.stage.draw();
+        menu.stage.draw();
     }
 
     @Override
@@ -84,5 +100,6 @@ public class MathematicsGameScreen implements Screen {
 
     @Override
     public void dispose() {
+
     }
 }

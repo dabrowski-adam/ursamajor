@@ -48,7 +48,7 @@ public class Digit extends AbstractGameObject {
         }
     }
 
-    void remove() {
+    void dispose() {
         origin = null;
         myTexture.dispose();
     }

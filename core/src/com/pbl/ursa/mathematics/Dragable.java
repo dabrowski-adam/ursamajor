@@ -16,4 +16,5 @@ public interface Dragable {
     void drop();
     boolean grab(Vector2 position);
     void dragTo(Vector2 position);
+    boolean doesWantScreenCoordinates();
 }

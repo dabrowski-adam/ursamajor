@@ -21,7 +21,7 @@ public class BodyFactory {
 
     private World world;
     static BodyFactory thisInstance;
-
+    
     private BodyFactory(World world) {
         this.world = world;
     }
