@@ -21,6 +21,7 @@ public class LevelLoader {
     private LevelLoader() {
         levels = new ArrayList();
         levels.add(new Level1());
+        levels.add(new Level2());
     }
 
     public static LevelLoader getInstance() {
@@ -41,6 +42,10 @@ public class LevelLoader {
         if (i >= 0 && i < levels.size()) {
             levels.get(i).loadLevel(currentLevel);
         }
+    }
+    
+    public int getNumberOfLevel(){
+        return levels.size();
     }
     
     

@@ -28,8 +28,6 @@ public class MathematicsGameScreen implements Screen {
     final SpriteBatch spriteBatch;
     //OrthographicCamera camera;
     //Viewport viewport;
-    Digit testDigit;
-    Number testNumber;
     public Level currentLevel;
     InputManager input;
     float time;
@@ -41,7 +39,7 @@ public class MathematicsGameScreen implements Screen {
     public MathematicsGameScreen(final UrsaGame game) {
         this.game = game;
         this.spriteBatch = game.spriteBatch;
-        currentLevel = new Level();
+        currentLevel = new Level(this);
         time = 0;
         epoch = 0;
         levelLoader = LevelLoader.getInstance();
@@ -62,7 +60,7 @@ public class MathematicsGameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         time += delta;
         currentLevel.update(delta);
-
+        menu.act(delta);
         spriteBatch.setProjectionMatrix(currentLevel.getCamera().combined);
         spriteBatch.begin();
         
@@ -72,6 +70,11 @@ public class MathematicsGameScreen implements Screen {
         
         currentLevel.stage.draw();
         menu.stage.draw();
+    }
+    
+    void goBackToMenu(){
+        game.setScreen(game.mainMenuScreen);
+        dispose();
     }
 
     @Override
@@ -95,11 +98,11 @@ public class MathematicsGameScreen implements Screen {
 
     @Override
     public void resume() {
-
+    
     }
 
     @Override
     public void dispose() {
-
+        
     }
 }

@@ -93,7 +93,7 @@ public abstract class PassableBar  {
     public void render(SpriteBatch spriteBatch) {
         sprite.draw(spriteBatch);
         currentLevel.font.getSpaceWidth();
-        currentLevel.font.draw(spriteBatch, condition, sprite.getX() + sprite.getWidth() / 2 , sprite.getY() + 30.0f);
+        currentLevel.font.draw(spriteBatch, condition, sprite.getX() + sprite.getWidth() / 2 , sprite.getY() + width);
     }
 
     void dispose() {

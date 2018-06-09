@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.pbl.ursa.UrsaGame;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,8 @@ public class Level {
 
     static private int NUM_OF_COLISION_CAT = 16;
     static Level recentInstance;
-
+    final MathematicsGameScreen screen;
+    
     World world;
     List<Number> numbers;
     boolean[] isTakenCollisionCategory;
@@ -59,7 +61,8 @@ public class Level {
 
     public static final float PPM = 20f;
 
-    Level() {
+    Level(MathematicsGameScreen screen) {
+        this.screen = screen;
         numbers = new ArrayList();
         operations = new ArrayList();
         passableBars = new ArrayList();
@@ -87,6 +90,15 @@ public class Level {
         createFloor();
         createBoundary();
         recentInstance = this;
+    }
+    
+    void dispose(){
+        flushLevel();
+        stage.dispose();
+        debugRenderer.dispose();
+        world.dispose();
+        font.dispose();
+        Gdx.app.log("Level cleared", "OK");
     }
 
     Camera getCamera() {
@@ -295,5 +307,10 @@ public class Level {
             return false;
         }
         return true;
+    }
+    
+    void goBackToMenu(){
+        screen.goBackToMenu();
+        dispose();
     }
 }

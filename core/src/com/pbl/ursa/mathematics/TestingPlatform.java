@@ -30,40 +30,41 @@ public abstract class TestingPlatform {
     Body realBody;
     Sprite sprite;
     Texture myTexture;
-    String condition;
+    String condition="";
     TextureRegion correctRegion;
     TextureRegion wrongRegion;
     TextureRegion neutralRegion;
     boolean ifCorrect;
     Map<Number, Integer> numbers;
 
-    public TestingPlatform(float x, float y, float lenght, Level currentLevel) {
+    public TestingPlatform(float x, float y, float lenght, String condition, Level currentLevel) {
         //    numbersOnTop = new ArrayList();
         this.currentLevel = currentLevel;
+        this.condition = condition;
         numbers = new HashMap();
         ifCorrect = false;
         BodyFactory bodyFactory = BodyFactory.getInstance(currentLevel.world);
-        realBody = bodyFactory.makeBoxPolyBody(x/Level.PPM, y/Level.PPM, lenght/Level.PPM, width/Level.PPM, 0, BodyDef.BodyType.StaticBody);
-        
+        realBody = bodyFactory.makeBoxPolyBody(x / Level.PPM, y / Level.PPM, lenght / Level.PPM, width / Level.PPM, 0, BodyDef.BodyType.StaticBody);
+
         myTexture = new Texture(Gdx.files.internal("mathematics/testing_bar") + ".bmp");
         correctRegion = new TextureRegion(myTexture, 0, 0, 320, 20);
         wrongRegion = new TextureRegion(myTexture, 0, 20, 320, 20);
         neutralRegion = new TextureRegion(myTexture, 0, 20 * 2, 320, 20);
         sprite = new Sprite(neutralRegion);
-        
+
         realBody.setUserData(this);
         sprite.setPosition(x, y);
         sprite.setSize(lenght, width);
     }
 
     void putOn(Number number) {
-        Gdx.app.log("putOn:","OK");
+        Gdx.app.log("putOn:", "OK");
         numbers.put(number, new Integer(number.value));
         checkIfCorrect();
     }
 
     void pickUp(Number number) {
-        Gdx.app.log("pickUp:","OK");
+        Gdx.app.log("pickUp:", "OK");
         numbers.remove(number);
         if (numbers.isEmpty()) {
             sprite.setRegion(neutralRegion);
@@ -97,6 +98,8 @@ public abstract class TestingPlatform {
 
     void render(SpriteBatch batch) {
         sprite.draw(batch);
+        currentLevel.font.draw(batch, condition, sprite.getX() + sprite.getWidth() / 2, sprite.getY() + width);
+
     }
 
     void update(float dt) {

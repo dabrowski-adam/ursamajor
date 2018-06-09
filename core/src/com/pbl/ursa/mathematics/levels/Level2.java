@@ -13,14 +13,12 @@ import java.util.Collection;
 /**
  *
  * @author marcin7Cd
- */
-public class Level1 implements LevelSetter {
+ */public class Level2 implements LevelSetter {
 
     @Override
     public void loadLevel(Level currentLevel) {
         currentLevel.addNumberAt(100, 400, 159);
         currentLevel.addNumberAt(80, 300, 45);
-        currentLevel.addNumberAt(260, 300, 67);
         currentLevel.addObstacle(100, 230, 50, 100);
         currentLevel.addBar(new PassableBar(0.0f, 50.0f, 160.0f, "sum of digits >= 10", currentLevel) {
             @Override
@@ -64,3 +62,4 @@ public class Level1 implements LevelSetter {
     }
 
 }
+
