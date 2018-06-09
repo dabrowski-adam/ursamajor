@@ -45,7 +45,8 @@ public class MenuOverlay {
     Stage stage;
     OrthographicCamera camera;
     Viewport viewport;
-
+    boolean WinScreen;
+    
     MenuOverlay(Level currentLevel, LevelLoader levelLoader) {
         stage = new Stage();
 
@@ -97,6 +98,9 @@ public class MenuOverlay {
     }
 
     void act(float dt) {
+        if(currentLevel.IfWinConsition()){
+        
+        }
         stage.act();
     }
 
@@ -104,6 +108,8 @@ public class MenuOverlay {
 
         //stage.draw();
     }
+    
+    
 
     class RestartEventListener extends InputListener {
 

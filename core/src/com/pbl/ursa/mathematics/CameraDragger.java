@@ -59,10 +59,8 @@ public class CameraDragger implements Dragable {
         //Vector3 position3 = camera.unproject(new Vector3(position.x, position.y, 0.0f));
         //Gdx.app.log("camera(x,y):", "(" + Float.toString(camera.position.x) + "," + Float.toString(camera.position.y) + ")");
         Vector2 temp = prevPosition.cpy().sub(position);
-        Gdx.app.log("cursor(x,y):","("+ Float.toString(position.x)+","+Float.toString(position.y)+")");
         temp.x = MathUtils.clamp(camera.position.x+temp.x, minXcam, maxXcam)-camera.position.x;
         temp.y = MathUtils.clamp(camera.position.y+temp.y, minYcam, maxYcam)-camera.position.y;
-        Gdx.app.log("diff                 (x,y):", "(" + Float.toString(temp.x) + "," + Float.toString(temp.y) + ")");
         
         camera.translate(temp.x, temp.y, 0);
         prevPosition = position;

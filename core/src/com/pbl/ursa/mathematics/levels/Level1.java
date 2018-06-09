@@ -7,6 +7,8 @@ package com.pbl.ursa.mathematics.levels;
 
 import com.pbl.ursa.mathematics.Level;
 import com.pbl.ursa.mathematics.PassableBar;
+import com.pbl.ursa.mathematics.TestingPlatform;
+import java.util.Collection;
 
 /**
  *
@@ -18,8 +20,8 @@ public class Level1 implements LevelSetter {
     public void loadLevel(Level currentLevel) {
         currentLevel.addNumberAt(100, 400, 159);
         currentLevel.addNumberAt(80, 300, 45);
-        currentLevel.addNumberAt(200, 300, 67);
-
+        currentLevel.addNumberAt(260, 300, 67);
+        currentLevel.addObstacle(100, 230, 50, 100);
         currentLevel.addBar(new PassableBar(0.0f, 50.0f, 160.0f, "sum of digits >= 10", currentLevel) {
             @Override
             public boolean checkIfCanBePassed(int number) {
@@ -46,6 +48,19 @@ public class Level1 implements LevelSetter {
             }
         }
         );
+
+        currentLevel.addTestingPlatform(new TestingPlatform(200.0f, 400.0f, 120.0f, currentLevel) {
+            @Override
+            public boolean checkIfCorrect(Collection<Integer> number) {
+                for (Integer x : number) {
+                    if (x > 100) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
     }
 
 }

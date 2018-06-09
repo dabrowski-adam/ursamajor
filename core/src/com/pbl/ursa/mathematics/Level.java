@@ -32,14 +32,15 @@ public class Level {
 
     static private int NUM_OF_COLISION_CAT = 16;
     static Level recentInstance;
-    
+
     World world;
     List<Number> numbers;
     boolean[] isTakenCollisionCategory;
     List<AddOperation> operations;
     List<PassableBar> passableBars;
-    
-    
+    List<Obstacle> obstacles;
+    List<TestingPlatform> testingPlatforms;
+
     Body boundary;
     Body boundaryLeft;
     Body boundaryRight;
@@ -51,18 +52,19 @@ public class Level {
     Stage stage;
     SpriteBatch spriteBatch;
 
-    
     float levelWidth;
     float levelHeight;
-    
+
     CameraDragger camDrag;
-    
+
     public static final float PPM = 20f;
 
     Level() {
         numbers = new ArrayList();
         operations = new ArrayList();
         passableBars = new ArrayList();
+        obstacles = new ArrayList();
+        testingPlatforms = new ArrayList();
         isTakenCollisionCategory = new boolean[NUM_OF_COLISION_CAT];
         //font = new BitmapFont(Gdx.files.internal("Calibri.fnt"),Gdx.files.internal("Calibri.png"),false);
         font = new BitmapFont();
@@ -72,15 +74,15 @@ public class Level {
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         debugRenderer.render(world, camera.combined);
         viewport = new StretchViewport(320, 480, camera);
-        
-        stage = new Stage(viewport);
-        
-        levelWidth = 320.0f;
-        levelHeight = 480.0f*1.5f;
 
-        camDrag = new CameraDragger(camera,this);
+        stage = new Stage(viewport);
+
+        levelWidth = 320.0f;
+        levelHeight = 480.0f * 1.5f;
+
+        camDrag = new CameraDragger(camera, this);
         camera.translate(0, -MenuOverlay.Width);
-        
+
         world.setContactListener(new NumberContactListener(this));
         createFloor();
         createBoundary();
@@ -143,6 +145,15 @@ public class Level {
 
     }
 
+    public void addObstacle(int posX, int posY, int width, int height) {
+        Obstacle temp = new Obstacle(posX, posY, width, height, world);
+        obstacles.add(temp);
+    }
+
+    public void addTestingPlatform(TestingPlatform platform) {
+        testingPlatforms.add(platform);
+    }
+
     public void addBar(PassableBar bar) {
         passableBars.add(bar);
         for (Number currentNumber : numbers) {
@@ -152,7 +163,7 @@ public class Level {
 
     public void addNumberAt(float x, float y, int value) {
         Number toAdd;
-        toAdd = new Number(x, y, value,takeCollisionCategory(), world);
+        toAdd = new Number(x, y, value, takeCollisionCategory(), world);
         numbers.add(toAdd);
         for (PassableBar currentBar : passableBars) {
             currentBar.checkNumber(toAdd);
@@ -173,7 +184,7 @@ public class Level {
         replaced.dispose();
         Number temp;
         if (numbers.remove(replaced)) {
-            temp = new Number(x, y, value,collisionCategory, world);
+            temp = new Number(x, y, value, collisionCategory, world);
             temp.realBody.setLinearVelocity(velocity);
             numbers.add(temp);
             for (PassableBar currentBar : passableBars) {
@@ -207,6 +218,12 @@ public class Level {
         for (AddOperation currentOperation : operations) {
             currentOperation.update(dt);
         }
+        for (Obstacle currentOBstacle : obstacles) {
+            currentOBstacle.update(dt);
+        }
+        for (TestingPlatform currentPlatform : testingPlatforms) {
+            currentPlatform.update(dt);
+        }
 
         for (int i = 0; i < operations.size(); i++) {
             if (operations.get(i).isToBeDestroyed) {
@@ -227,6 +244,12 @@ public class Level {
         for (AddOperation currentOperation : operations) {
             currentOperation.render(spriteBatch);
         }
+        for (Obstacle currentOBstacle : obstacles) {
+            currentOBstacle.render(spriteBatch);
+        }
+        for (TestingPlatform currentPlatform : testingPlatforms) {
+            currentPlatform.render(spriteBatch);
+        }
     }
 
     int takeCollisionCategory() {
@@ -238,18 +261,39 @@ public class Level {
         }
         return 0;
     }
-    
-    void flushLevel(){
-        while(!numbers.isEmpty()){
+
+    void flushLevel() {
+        while (!numbers.isEmpty()) {
             removeNumber(numbers.get(0));
         }
-        while(!passableBars.isEmpty()){
+        while (!passableBars.isEmpty()) {
             passableBars.get(0).dispose();
             passableBars.remove(0);
         }
         operations.clear();
-        for(int i=0;i<NUM_OF_COLISION_CAT;i++){
+        while (!obstacles.isEmpty()) {
+            obstacles.get(0).dispose();
+            obstacles.remove(0);
+        }
+        while (!testingPlatforms.isEmpty()) {
+            testingPlatforms.get(0).dispose();
+            testingPlatforms.remove(0);
+        }
+        for (int i = 0; i < NUM_OF_COLISION_CAT; i++) {
             isTakenCollisionCategory[i] = false;
         }
+        world.clearForces();
+    }
+
+    boolean IfWinConsition() {
+        for (TestingPlatform platform : testingPlatforms) {
+            if (!platform.ifCorrect) {
+                return false;
+            }
+        }
+        if (testingPlatforms.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

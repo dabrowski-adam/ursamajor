@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public abstract class PassableBar extends AbstractGameObject {
+public abstract class PassableBar  {
 
     static final float width = 30.0f;
 
@@ -86,12 +86,10 @@ public abstract class PassableBar extends AbstractGameObject {
 
     abstract public boolean checkIfCanBePassed(int number);
 
-    @Override
     public void update(float deltaTime) {
 
     }
 
-    @Override
     public void render(SpriteBatch spriteBatch) {
         sprite.draw(spriteBatch);
         currentLevel.font.getSpaceWidth();
@@ -99,6 +97,7 @@ public abstract class PassableBar extends AbstractGameObject {
     }
 
     void dispose() {
+        realBody.getWorld().destroyBody(realBody);
         myTexture.dispose();
     }
 }

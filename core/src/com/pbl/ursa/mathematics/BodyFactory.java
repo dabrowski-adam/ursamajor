@@ -72,8 +72,8 @@ public class BodyFactory {
         // create a definition
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.type = bodyType;
-        boxBodyDef.position.x = posx;
-        boxBodyDef.position.y = posy;
+        boxBodyDef.position.x = posx + width/2;
+        boxBodyDef.position.y = posy + height/2;
         boxBodyDef.fixedRotation = fixedRotation;
 
         //create the body to attach said definition
