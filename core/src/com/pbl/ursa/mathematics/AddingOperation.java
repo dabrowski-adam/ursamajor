@@ -42,7 +42,7 @@ public class AddingOperation {
         carries = new int[stationaryNumber.digits.size()];
         temporaryDigits = new Group();
         currentLevel.stage.addActor(temporaryDigits);
-        currentLevel.numbers.remove(movingNumber);
+        currentLevel.numbers.remove(this.movingNumber);
         goToNextTurn();
     }
 
@@ -93,6 +93,8 @@ public class AddingOperation {
                             temp / 10, new Vector2(20.0f, 30.0f), stationaryNumber.digits.get(i + 1), turnDuration*2.0f));
                     carries[i + 1] = temp / 10 ;
                 }
+            movingNumber.realBody.getFixtureList().get(0).getFilterData().maskBits= 0;
+            
             }
         } else {
             for (int i = stationaryNumber.digits.size()-1; i >=0; i--) {
