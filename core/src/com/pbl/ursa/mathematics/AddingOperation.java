@@ -18,9 +18,9 @@ import java.util.List;
  *
  * @author marcin7Cd
  */
-public class AddOperation {
+public class AddingOperation {
 
-    static final float turnDuration = 1.0f;
+    static final float turnDuration = 0.8f;
     static final float maximalOffset = 20.0f;
 
     Number movingNumber;
@@ -34,7 +34,7 @@ public class AddOperation {
     boolean isFinished = false;
     boolean isToBeDestroyed = false;
 
-    AddOperation(Number stationaryNumber, Number movingNumber, Level currentLevel) {
+    AddingOperation(Number stationaryNumber, Number movingNumber, Level currentLevel) {
         this.currentLevel = currentLevel;
         this.stationaryNumber = stationaryNumber;
         this.movingNumber = movingNumber;
@@ -90,9 +90,7 @@ public class AddOperation {
                 a.changeDigitTo(temp);
                 if (temp >= 10) {
                     temporaryDigits.addActor(new TemporaryDigit(a.position.x + a.dimension.x/2, a.position.y + a.dimension.y/2,
-                            temp / 10, new Vector2(20.0f, 30.0f), stationaryNumber.digits.get(i + 1), turnDuration));
-                    //temporaryDigits.addActor(new TemporaryDigit(a.sprite.getX()+ a.dimension.x/2 + 20.0f, a.sprite.getY() + a.dimension.y / 2 - 15.0f,
-                    //        temp / 10, new Vector2(20.0f, 30.0f), stationaryNumber.digits.get(i + 1), turnDuration));
+                            temp / 10, new Vector2(20.0f, 30.0f), stationaryNumber.digits.get(i + 1), turnDuration*2.0f));
                     carries[i + 1] = temp / 10 ;
                 }
             }
@@ -100,19 +98,15 @@ public class AddOperation {
             for (int i = stationaryNumber.digits.size()-1; i >=0; i--) {
                 a = stationaryNumber.digits.get(i);
                 temp = a.value + carries[i];
-                Gdx.app.log("temp", Integer.toString(carries[i])+" "+Integer.toString(temp));
                 carries[i] = 0;
                 a.changeDigitTo(temp);
                 if (temp >= 10) {
                     if(i == stationaryNumber.digits.size()) {continue;}
                     temporaryDigits.addActor(new TemporaryDigit(a.position.x + a.dimension.x/2, a.position.y + a.dimension.y/2,
-                            temp / 10, new Vector2(20.0f, 30.0f), stationaryNumber.digits.get(i + 1), turnDuration));
-                    //temporaryDigits.addActor(new TemporaryDigit(a.sprite.getX()+ a.dimension.x/2 + 20.0f, a.sprite.getY() + a.dimension.y / 2 - 15.0f,
-                    //        temp / 10, new Vector2(20.0f, 30.0f), stationaryNumber.digits.get(i + 1), turnDuration));
+                            temp / 10, new Vector2(20.0f, 30.0f), stationaryNumber.digits.get(i + 1), turnDuration*2.0f));
                     carries[i + 1] = temp / 10;
                 }
             }
-            Gdx.app.log("-----", "xx");
                 
         }
         if (checkIfStop()) {

@@ -36,8 +36,13 @@ public class CameraDragger implements Dragable {
         maxXcam = currentLevel.levelWidth - minXcam;
         minYcam = camera.viewportHeight / 2 - MenuOverlay.Width;
         maxYcam = currentLevel.levelHeight - minYcam - MenuOverlay.Width;
-        //Gdx.app.log("rangeOfTranslation(x,y):","("+ Float.toString(rangeOfTranslation.x)+","+Float.toString(rangeOfTranslation.y)+")");
-
+    }
+    
+    void update(){
+        minXcam = camera.viewportWidth / 2;
+        maxXcam = currentLevel.levelWidth - minXcam;
+        minYcam = camera.viewportHeight / 2 - MenuOverlay.Width;
+        maxYcam = currentLevel.levelHeight - minYcam - MenuOverlay.Width;
     }
 
     @Override

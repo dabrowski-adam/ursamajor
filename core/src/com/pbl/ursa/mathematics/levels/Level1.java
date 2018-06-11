@@ -18,11 +18,12 @@ public class Level1 implements LevelSetter {
 
     @Override
     public void loadLevel(Level currentLevel) {
-        currentLevel.addNumberAt(100, 400, 159);
-        currentLevel.addNumberAt(80, 300, 45);
-        currentLevel.addNumberAt(260, 300, 67);
-        currentLevel.addObstacle(100, 230, 50, 100);
-        currentLevel.addBar(new PassableBar(0.0f, 50.0f, 160.0f, "sum of digits >= 10", currentLevel) {
+        
+        new Level.Loader().apply(currentLevel);
+        currentLevel.addNumberAt(150, 150, 999);
+        currentLevel.addNumberAt(150, 330, 1);
+        currentLevel.addNumberAt(270, 150, 50);
+        currentLevel.addBar(new PassableBar(0.0f,120.0f,320.0f,"Sum of digits = 6",currentLevel){
             @Override
             public boolean checkIfCanBePassed(int number) {
                 int sum = 0;
@@ -31,36 +32,19 @@ public class Level1 implements LevelSetter {
                     sum += temp % 10;
                     temp /= 10;
                 }
-                if (sum >= 10) {
+                if (sum == 6) {
                     return true;
                 }
-                return false;
-            }
-        }
-        );
-        currentLevel.addBar(new PassableBar(0.0f, 200.0f, 320.0f, "x>200 and x<250", currentLevel) {
-            @Override
-            public boolean checkIfCanBePassed(int number) {
-                if (number > 200 && number < 250) {
-                    return true;
-                }
-                return false;
-            }
-        }
-        );
-
-        currentLevel.addTestingPlatform(new TestingPlatform(200.0f, 400.0f, 120.0f,"x>100", currentLevel) {
-            @Override
-            public boolean checkIfCorrect(Collection<Integer> number) {
-                for (Integer x : number) {
-                    if (x > 100) {
-                        return true;
-                    }
-                }
-                return false;
+                return false;    
             }
         });
-
+        
+        currentLevel.addTestingPlatform(new TestingPlatform(0.0f,0.0f,320.0f,"",currentLevel){
+            @Override
+            public boolean checkIfCorrect(Collection<Integer> number) {
+            return !number.isEmpty();
+            }
+        });
     }
 
 }

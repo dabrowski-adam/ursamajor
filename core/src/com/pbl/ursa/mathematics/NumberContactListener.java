@@ -35,18 +35,19 @@ public class NumberContactListener implements ContactListener {
                 firstNumber = (Number) fa.getBody().getUserData();
                 if (fb.getBody().getUserData().getClass() == Number.class) {
                     secondNumber = (Number) fb.getBody().getUserData();
-                    if (fb.getBody().getWorldCenter().y > fa.getBody().getWorldCenter().y) {
+                    if (fb.getBody().getWorldCenter().y - secondNumber.dimension.y/Level.PPM  + 0.15f > fa.getBody().getWorldCenter().y) {
                         firstNumber.numbersOnTop++;
-                    } else {
+                    }
+                    if (fa.getBody().getWorldCenter().y - firstNumber.dimension.y/Level.PPM  + 0.15f > fb.getBody().getWorldCenter().y) {
                         secondNumber.numbersOnTop++;
                     }
                     addNumbersIfPossible(firstNumber, secondNumber);
                 }
-                Gdx.app.log("there is number:", "OK" + fb.getBody().getUserData().getClass().getSuperclass().toString() + " " + TestingPlatform.class.toString()
-                        + Boolean.toString(fb.getBody().getUserData().getClass().isAssignableFrom(TestingPlatform.class)));
+                //Gdx.app.log("there is number:", "OK" + fb.getBody().getUserData().getClass().getSuperclass().toString() + " " + TestingPlatform.class.toString()
+                //        + Boolean.toString(fb.getBody().getUserData().getClass().isAssignableFrom(TestingPlatform.class)));
 
                 if (fb.getBody().getUserData().getClass().getSuperclass() == TestingPlatform.class) {
-                    Gdx.app.log("there is number1 and platform:", "OK");
+                //    Gdx.app.log("there is number1 and platform:", "OK");
 
                     TestingPlatform platform = (TestingPlatform) (fb.getBody().getUserData());
                     platform.putOn(firstNumber);
@@ -58,7 +59,7 @@ public class NumberContactListener implements ContactListener {
                 TestingPlatform platform = (TestingPlatform) (fa.getBody().getUserData());
                 if (fb.getBody().getUserData().getClass() == Number.class) {
 
-                    Gdx.app.log("there is platform and number:", "OK" );
+                //    Gdx.app.log("there is platform and number:", "OK" );
                     firstNumber = (Number) fb.getBody().getUserData();
                     platform.putOn(firstNumber);
                 }
@@ -82,9 +83,10 @@ public class NumberContactListener implements ContactListener {
                 firstNumber = (Number) fa.getBody().getUserData();
                 if (fb.getBody().getUserData().getClass() == Number.class) {
                     secondNumber = (Number) fb.getBody().getUserData();
-                    if (fb.getBody().getWorldCenter().y > fa.getBody().getWorldCenter().y) {
+                    if (fb.getBody().getWorldCenter().y - secondNumber.dimension.y/Level.PPM  + 0.15f > fa.getBody().getWorldCenter().y) {
                         firstNumber.numbersOnTop--;
-                    } else {
+                    }
+                    if (fa.getBody().getWorldCenter().y - firstNumber.dimension.y/Level.PPM + 0.15f > fb.getBody().getWorldCenter().y) {
                         secondNumber.numbersOnTop--;
                     }
                     return;
@@ -119,7 +121,7 @@ public class NumberContactListener implements ContactListener {
 
     void addNumbersIfPossible(Number a, Number b) {
         if (!a.isOperatedOn && !b.isOperatedOn && Math.abs(a.getLogicalX() - b.getLogicalX()) < 10) { // 5 -temporary range
-            Gdx.app.log("test", "tt");
+            //Gdx.app.log("test", "tt");
             if (a.realBody.getLinearVelocity().y < b.realBody.getLinearVelocity().y) {
                 if (b.digits.size() >= a.digits.size()) {
                     level.appendAddOperation(b, a);

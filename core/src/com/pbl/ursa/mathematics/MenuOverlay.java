@@ -124,8 +124,8 @@ public class MenuOverlay {
     }
 
     void goBackToMainMenu() {
-        currentLevel.goBackToMenu();
         dispose();
+        currentLevel.goBackToMenu();
     }
 
     void ReeloadLevel() {

@@ -38,7 +38,7 @@ public class Level {
     World world;
     List<Number> numbers;
     boolean[] isTakenCollisionCategory;
-    List<AddOperation> operations;
+    List<AddingOperation> operations;
     List<PassableBar> passableBars;
     List<Obstacle> obstacles;
     List<TestingPlatform> testingPlatforms;
@@ -81,7 +81,7 @@ public class Level {
         stage = new Stage(viewport);
 
         levelWidth = 320.0f;
-        levelHeight = 480.0f * 1.5f;
+        levelHeight = 480.0f;
 
         camDrag = new CameraDragger(camera, this);
         camera.translate(0, -MenuOverlay.Width);
@@ -205,7 +205,7 @@ public class Level {
         }
     }
 
-    boolean removeOperation(AddOperation operation) {
+    boolean removeOperation(AddingOperation operation) {
         operation.stationaryNumber.deatachFromOperation();
         operation.movingNumber.deatachFromOperation();
         //return operations.remove(operation);
@@ -213,7 +213,7 @@ public class Level {
     }
 
     void appendAddOperation(Number stationaryNumber, Number movingNumber) {
-        operations.add(new AddOperation(stationaryNumber, movingNumber, this));
+        operations.add(new AddingOperation(stationaryNumber, movingNumber, this));
         stationaryNumber.attachToOperation();
         movingNumber.attachToOperation();
 
@@ -227,7 +227,7 @@ public class Level {
         for (Number currentNumber : numbers) {
             currentNumber.update(dt);
         }
-        for (AddOperation currentOperation : operations) {
+        for (AddingOperation currentOperation : operations) {
             currentOperation.update(dt);
         }
         for (Obstacle currentOBstacle : obstacles) {
@@ -253,7 +253,7 @@ public class Level {
         for (Number currentNumber : numbers) {
             currentNumber.render(spriteBatch);
         }
-        for (AddOperation currentOperation : operations) {
+        for (AddingOperation currentOperation : operations) {
             currentOperation.render(spriteBatch);
         }
         for (Obstacle currentOBstacle : obstacles) {
@@ -294,6 +294,12 @@ public class Level {
         for (int i = 0; i < NUM_OF_COLISION_CAT; i++) {
             isTakenCollisionCategory[i] = false;
         }
+        //world.dispose();
+        //world = new World(new Vector2(0, -10f), true);
+        //world.setContactListener(new NumberContactListener(this));
+        //createFloor();
+        //createBoundary();
+        
         world.clearForces();
     }
 
@@ -310,7 +316,31 @@ public class Level {
     }
     
     void goBackToMenu(){
-        screen.goBackToMenu();
         dispose();
+        screen.goBackToMenu();
+    }
+    
+    public static class Loader{
+        
+        private float levelWidth = 320.0f;
+        private float levelHeight = 410.0f;
+        
+        public Loader levelWidth(float levelWidth){
+            this.levelWidth = Math.max(this.levelWidth, levelWidth);
+            return this;
+        }
+        public Loader levelHeight(float levelHeight){
+            this.levelHeight = Math.max(this.levelHeight, levelHeight);
+            return this;
+        }
+        public void apply(Level currentLevel){
+            currentLevel.levelHeight = this.levelHeight;
+            currentLevel.levelWidth = this.levelWidth;
+            currentLevel.camDrag.update();
+            currentLevel.camera.position.x =currentLevel.camera.viewportWidth/2;
+            currentLevel.camera.position.y =currentLevel.camera.viewportHeight/2- MenuOverlay.Width;
+            
+            
+        }
     }
 }

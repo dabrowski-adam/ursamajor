@@ -20,6 +20,7 @@ public class LevelLoader {
 
     private LevelLoader() {
         levels = new ArrayList();
+        levels.add(new LevelTest());
         levels.add(new Level1());
         levels.add(new Level2());
     }

@@ -103,6 +103,6 @@ public class MathematicsGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        
+        currentLevel =null;
     }
 }

@@ -35,8 +35,9 @@ public class TemporaryDigit extends Actor {
     void goToDigit(Digit destination, float delay) {
         this.addAction(Actions.sequence(
                 //Actions.delay(delay),
-                Actions.moveBy((-Number.DIGIT_X) / 2, 50, delay/2, Interpolation.circle),
-                Actions.moveBy((-Number.DIGIT_X) / 2, -20, delay/2, Interpolation.circle),
+                Actions.moveBy((-Number.DIGIT_X) / 2, 45, delay/3, Interpolation.smooth),
+                Actions.moveBy((-Number.DIGIT_X) / 3, 0, delay/3, Interpolation.smooth),
+                Actions.moveBy((-Number.DIGIT_X) / 3, -20, delay/3, Interpolation.smooth),
                 Actions.removeActor()));
     }
 
