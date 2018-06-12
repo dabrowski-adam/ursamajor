@@ -45,4 +45,8 @@ public class Cell implements ToolHolder {
         return true;
     }
 
+    public void clear() {
+        content = Tool.Empty;
+        isDisabled = false;
+    }
 }

@@ -101,6 +101,8 @@ public class Inventory implements ToolHolder {
         gameScreen.input.bindDown(newInvItem.bounds, new Callable() {
             @Override
             public void call(float x, float y) {
+                if (gameScreen.board.isSimulating) { return; }
+
                 Tool tool = newInvItem.remove();
                 if (tool != null) {
                     gameScreen.draggedItem = tool;
@@ -117,5 +119,9 @@ public class Inventory implements ToolHolder {
         add(tool);
 
         return true;
+    }
+
+    public void clear() {
+        tools.clear();
     }
 }
