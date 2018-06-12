@@ -32,9 +32,12 @@ import java.util.List;
 public class Level {
 
     static private int NUM_OF_COLISION_CAT = 16;
+    static private float FRAME_SPEED = 1.0f / 60.0f;
     static Level recentInstance;
     final MathematicsGameScreen screen;
-    
+
+    float timeToNextFrame = 0.0f;
+
     World world;
     List<Number> numbers;
     boolean[] isTakenCollisionCategory;
@@ -48,6 +51,7 @@ public class Level {
     Body boundaryRight;
 
     BitmapFont font;
+    BitmapFont barFont;
     Box2DDebugRenderer debugRenderer;
     OrthographicCamera camera;
     Viewport viewport;
@@ -59,7 +63,7 @@ public class Level {
 
     CameraDragger camDrag;
 
-    public static final float PPM = 20f;
+    public static final float PPM = 50f;
 
     Level(MathematicsGameScreen screen) {
         this.screen = screen;
@@ -71,11 +75,15 @@ public class Level {
         isTakenCollisionCategory = new boolean[NUM_OF_COLISION_CAT];
         //font = new BitmapFont(Gdx.files.internal("Calibri.fnt"),Gdx.files.internal("Calibri.png"),false);
         font = new BitmapFont();
+        barFont = new BitmapFont();
+        barFont.setColor(255.0f, 255.0f, 255.0f, 255.0f);
+        
         world = new World(new Vector2(0, -10f), true);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 480);
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         debugRenderer.render(world, camera.combined);
+
         viewport = new StretchViewport(320, 480, camera);
 
         stage = new Stage(viewport);
@@ -91,8 +99,8 @@ public class Level {
         createBoundary();
         recentInstance = this;
     }
-    
-    void dispose(){
+
+    void dispose() {
         flushLevel();
         stage.dispose();
         debugRenderer.dispose();
@@ -141,7 +149,7 @@ public class Level {
         bodyDef.position.set(-1, 10);
         boundaryLeft = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1, 20);
+        shape.setAsBox(1, 10);
         boundaryLeft.createFixture(shape, 0.0f);
         shape.dispose();
 
@@ -150,7 +158,7 @@ public class Level {
         bodyDef.position.set(320.0f / Level.PPM + 1.0f, 10);
         boundaryRight = world.createBody(bodyDef);
         shape = new PolygonShape();
-        shape.setAsBox(1, 20);
+        shape.setAsBox(1, 10);
         boundaryRight.createFixture(shape, 0.0f);
 
         shape.dispose();
@@ -220,7 +228,12 @@ public class Level {
     }
 
     void update(float dt) {
-        world.step(dt, 3, 3);
+        //timeToNextFrame += dt;
+        //while (timeToNextFrame > FRAME_SPEED) {
+            //world.step(FRAME_SPEED, 3, 3);
+        //    timeToNextFrame -=FRAME_SPEED;
+        //}
+        world.step(dt,3,3);
         for (PassableBar currentBar : passableBars) {
             currentBar.update(dt);
         }
@@ -299,7 +312,7 @@ public class Level {
         //world.setContactListener(new NumberContactListener(this));
         //createFloor();
         //createBoundary();
-        
+
         world.clearForces();
     }
 
@@ -314,33 +327,34 @@ public class Level {
         }
         return true;
     }
-    
-    void goBackToMenu(){
+
+    void goBackToMenu() {
         dispose();
         screen.goBackToMenu();
     }
-    
-    public static class Loader{
-        
+
+    public static class Loader {
+
         private float levelWidth = 320.0f;
         private float levelHeight = 410.0f;
-        
-        public Loader levelWidth(float levelWidth){
+
+        public Loader levelWidth(float levelWidth) {
             this.levelWidth = Math.max(this.levelWidth, levelWidth);
             return this;
         }
-        public Loader levelHeight(float levelHeight){
+
+        public Loader levelHeight(float levelHeight) {
             this.levelHeight = Math.max(this.levelHeight, levelHeight);
             return this;
         }
-        public void apply(Level currentLevel){
+
+        public void apply(Level currentLevel) {
             currentLevel.levelHeight = this.levelHeight;
             currentLevel.levelWidth = this.levelWidth;
             currentLevel.camDrag.update();
-            currentLevel.camera.position.x =currentLevel.camera.viewportWidth/2;
-            currentLevel.camera.position.y =currentLevel.camera.viewportHeight/2- MenuOverlay.Width;
-            
-            
+            currentLevel.camera.position.x = currentLevel.camera.viewportWidth / 2;
+            currentLevel.camera.position.y = currentLevel.camera.viewportHeight / 2 - MenuOverlay.Width;
+
         }
     }
 }

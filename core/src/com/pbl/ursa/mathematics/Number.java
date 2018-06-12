@@ -116,6 +116,7 @@ public class Number implements Dragable  {
                 temp.sub(relativeGrabPosition);
                 temp.scl(temp.len());
                 if (temp.len() > 0.5f) {
+                    //realBody.applyLinearImpulse(temp.scl(realBody.getMass()/10.0f), realBody.getLocalCenter(), dragable);
                     realBody.setLinearVelocity(temp);
                 } else {
                     realBody.setLinearVelocity(0.0f, 0.0f);
@@ -144,6 +145,8 @@ public class Number implements Dragable  {
 
     @Override
     public boolean grab(Vector2 position) {
+        
+        //Gdx.app.log("is Grabbed ","OK");
         isGrabbed = true;
         relativeGrabPosition.set(realBody.getLocalPoint(position.cpy().scl(1.0f / Level.PPM)));
         destination.set(realBody.getWorldCenter().cpy().add(relativeGrabPosition));
@@ -152,6 +155,7 @@ public class Number implements Dragable  {
 
     @Override
     public void dragTo(Vector2 position) {
+        //Gdx.app.log("dragged to", "("+Float.toString(position.x)+","+Float.toString(position.y)+")");
         if (isGrabbed) {
             destination.set(position);
         }
@@ -159,6 +163,7 @@ public class Number implements Dragable  {
 
     @Override
     public void drop() {
+        //Gdx.app.log("is Dropped ","OK");
         isGrabbed = false;
     }
 
