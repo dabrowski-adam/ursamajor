@@ -23,6 +23,8 @@ public class LevelLoader {
         levels.add(new LevelTest());
         levels.add(new Level1());
         levels.add(new Level2());
+        levels.add(new Level3());
+        levels.add(new Level4());
     }
 
     public static LevelLoader getInstance() {
