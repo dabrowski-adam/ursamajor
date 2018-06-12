@@ -49,6 +49,9 @@ public class TechnologyGameScreen implements Screen {
         // Assets
         assets = new EnumMap<Tool, Texture>(Tool.class);
         assets.put(Tool.BeltRight, new Texture(Gdx.files.internal("technology/belt.png")));
+        assets.put(Tool.BeltDown, new Texture(Gdx.files.internal("technology/belt_s.png")));
+        assets.put(Tool.BeltLeft, new Texture(Gdx.files.internal("technology/belt_w.png")));
+        assets.put(Tool.BeltUp, new Texture(Gdx.files.internal("technology/belt_n.png")));
         assets.put(Tool.BeltRightLocked, new Texture(Gdx.files.internal("technology/belt_blocked.png")));
         assets.put(Tool.Bottle, new Texture(Gdx.files.internal("technology/bottle.png")));
         assets.put(Tool.Bin, new Texture(Gdx.files.internal("technology/bin.png")));

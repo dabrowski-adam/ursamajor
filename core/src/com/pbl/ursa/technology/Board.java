@@ -56,6 +56,9 @@ public class Board {
                     public void call(float x, float y) {
                         if (cell.insert(gameScreen.draggedItem)) {
                             gameScreen.draggedItem = null;
+                            if (cell == gameScreen.itemOrigin) {
+                                cell.rotate();
+                            }
                         } else {
                             gameScreen.resetDragged();
                         }
@@ -158,14 +161,38 @@ public class Board {
                             trash.nextPosX = trash.posX + 1;
                             trash.nextPosY = trash.posY;
                             trash.isMoved = true;
+                            break;
                         }
-                        break;
                     case BeltRight:
                         if (trash.posX + 1 < 5) {
                             trash.nextPosX = trash.posX + 1;
                             trash.nextPosY = trash.posY;
                             trash.isMoved = true;
+                            break;
                         }
+                    case BeltLeft:
+                        if (trash.posX - 1 >= 0) {
+                            trash.nextPosX = trash.posX - 1;
+                            trash.nextPosY = trash.posY;
+                            trash.isMoved = true;
+                            break;
+                        }
+                    case BeltUp:
+                        if (trash.posY + 1 < 5) {
+                            trash.nextPosX = trash.posX;
+                            trash.nextPosY = trash.posY + 1;
+                            trash.isMoved = true;
+                            break;
+                        }
+                    case BeltDown:
+                        if (trash.posY - 1 >= 0) {
+                            trash.nextPosX = trash.posX;
+                            trash.nextPosY = trash.posY - 1;
+                            trash.isMoved = true;
+                            break;
+                        }
+                    default:
+                        stopSimulation();
                         break;
                 }
             }
