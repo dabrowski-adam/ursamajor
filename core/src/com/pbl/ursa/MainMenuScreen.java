@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pbl.ursa.engineering.EngineeringGameScreen;
+import com.pbl.ursa.facts.FunFacts;
 import com.pbl.ursa.technology.TechnologyGameScreen;
 import com.pbl.ursa.mathematics.MathematicsGameScreen;
 
@@ -78,6 +79,11 @@ public class MainMenuScreen implements Screen {
         table.add(buttonM).padTop(16);
         table.row();
 
+        final TextButton buttonF = new TextButton("Fun Facts", skin);
+        buttonM.pad(4);
+        table.add(buttonF).padTop(16);
+        table.row();
+
         buttonS.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -107,6 +113,14 @@ public class MainMenuScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 buttonM.setText("Mathematics!");
                 game.setScreen(new MathematicsGameScreen(game));
+            }
+        });
+
+        buttonF.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                buttonF.setText("Fun Facts!");
+                game.setScreen(new FunFacts(game));
             }
         });
 

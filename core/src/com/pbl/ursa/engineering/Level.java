@@ -27,12 +27,14 @@ public class Level {
     private float alpha=0.0f;
     private float deltaTime;
     private BitmapFont text;
+    private BitmapFont text_fact;
     private boolean endGame=false;
     private final String name;
+    private final String fact;
     private Sound done_sound;
     private boolean finish;
 
-    public Level(String done, String mystery, String name) {
+    public Level(String done, String mystery, String name, String fact) {
         Texture done_texture = new Texture(Gdx.files.internal("engineering/"+done));
         done_texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         this.done = new Sprite(done_texture);
@@ -47,8 +49,12 @@ public class Level {
         text.getData().setScale(3);
         text.setColor(Color.BLACK);
         text.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        text_fact = new BitmapFont();
+        text_fact.getData().setScale(1);
+        text_fact.setColor(Color.BLACK);
+        text_fact.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         this.name=name;
-
+        this.fact=fact;
         done_sound = Gdx.audio.newSound(Gdx.files.internal("engineering/tada.mp3"));
     }
 
@@ -112,7 +118,8 @@ public class Level {
         if (spriteBatch == null || !spriteBatch.isDrawing()) { return false; }
         if(endGame){
             done.draw(spriteBatch);
-            text.draw(spriteBatch,name,50,100);
+            text.draw(spriteBatch,name,50,200);
+            text_fact.draw(spriteBatch,fact,5,150);
             if(finish) return true;
             return false;
         }
