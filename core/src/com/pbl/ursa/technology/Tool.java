@@ -9,5 +9,9 @@ public enum Tool {
     BeltLeft,
     BeltRight,
     Bottle,
-    BottomBackground // TODO: Create an enum just for assets
+    BottomBackground, // TODO: Create an enum just for assets
+    N,
+    S,
+    W,
+    E
 }

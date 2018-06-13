@@ -12,6 +12,7 @@ import java.util.Map;
 public class InputHandler extends InputAdapter {
     Camera camera;
     Vector3 target;
+    boolean isDisabled;
     boolean isDragging;
     Map<Rectangle, Callable> touchDownBinder;
     Map<Rectangle, Callable> touchDraggedBinder;
@@ -25,6 +26,7 @@ public class InputHandler extends InputAdapter {
         this.camera = gameScreen.camera;
 
         target = new Vector3();
+        isDisabled = false;
         isDragging = false;
         touchDownBinder = new LinkedHashMap<Rectangle, Callable>();
         touchDraggedBinder = new LinkedHashMap<Rectangle, Callable>();
@@ -50,6 +52,8 @@ public class InputHandler extends InputAdapter {
     }
 
     private void handleBinder(Map<Rectangle, Callable> binder, Vector3 coords) {
+        if (isDisabled) { return; }
+
         for (Rectangle bounds : binder.keySet()) {
             if (bounds.contains(coords.x, coords.y)) {
                 binder.get(bounds).call(coords.x, coords.y);
