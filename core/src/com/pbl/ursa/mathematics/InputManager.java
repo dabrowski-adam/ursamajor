@@ -77,7 +77,7 @@ public class InputManager implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         overlayStage.touchUp(screenX, screenY, pointer, button);
-        if (screenY > MenuOverlay.Width) {
+        /*if (screenY > MenuOverlay.Width)*/ {
             if (currentDragable != null) {
                 currentDragable.drop();
                 currentDragable = null;
@@ -88,7 +88,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (screenY > MenuOverlay.Width) {
+        if (camera.viewportHeight-screenY > MenuOverlay.Width) {
             if (currentDragable != null) {
                 if (currentDragable.doesWantScreenCoordinates()) {
                     Vector3 position = camera.unproject(new Vector3(screenX, screenY, 0));
