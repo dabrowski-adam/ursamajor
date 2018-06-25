@@ -45,4 +45,28 @@ public class Cell implements ToolHolder {
         return true;
     }
 
+    public void rotate() {
+        switch (content) {
+            case BeltRight:
+                content = Tool.BeltUp;
+                break;
+            case BeltDown:
+                content = Tool.BeltRight;
+                break;
+            case BeltLeft:
+                content = Tool.BeltDown;
+                break;
+            case BeltUp:
+                content = Tool.BeltLeft;
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    public void clear() {
+        content = Tool.Empty;
+        isDisabled = false;
+    }
 }
